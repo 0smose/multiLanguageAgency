@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -22,13 +22,27 @@ function App() {
     fr: messagesFr,
 };
 
-  const [language, setLanguage] = useState('fr')
+const [language, setLanguage] = useState('fr');
+
+useEffect(() => {
+  localStorage.setItem('langue', JSON.stringify(language))
+}, [language])
+
+useEffect(() => {
+  const localLanguage = localStorage.getItem('lang');
+  if (localLanguage)
+    setLanguage(localLanguage);
+}, []);
+
+ 
 
   const changeLanguage = (language) => {
     if (language === 'fr') {
       setLanguage('fr')
+      localStorage.setItem('lang', 'fr')
     } else if (language === 'en') {
       setLanguage('en');  
+      localStorage.setItem('lang', 'en')
     }
   }
  
@@ -40,13 +54,13 @@ function App() {
             <Navbar/>
             <Switch>
               <Route path="/about">
-                <About changeLanguage={changeLanguage}/>
+                <About changeLanguage={changeLanguage} language={language}/>
               </Route>
               <Route path="/works">
-                <Works changeLanguage={changeLanguage}/>
+                <Works changeLanguage={changeLanguage} language={language}/>
               </Route>
               <Route exact path="/">
-                <Home changeLanguage={changeLanguage}/>
+                <Home changeLanguage={changeLanguage} language={language}/>
               </Route>
             </Switch>
           </Router>     

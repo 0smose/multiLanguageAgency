@@ -1,15 +1,23 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import LanguageContext from '../Context';
+import imgFr from "../assets/img/fr.png"
+import imgEn from "../assets/img/en.png"
 
 
 
-const About = ({changeLanguage}) => {
+const About = ({changeLanguage, language}) => {
+    let imgFlag;
+    let name;
+
+    language === 'fr' ? imgFlag = imgEn : imgFlag = imgFr; 
+    language === 'fr' ? name = 'en' : name = 'fr';
   
     return (
+        <LanguageContext.Consumer>
+            {value => (
         <div>
-             <button style={{width: '118.26px', backgroundColor: '#f1f1f1'}} value="en" onClick={e => changeLanguage(e.target.value)}>En </button><br/>
-             <button style={{width: '118.26px', backgroundColor: '#f1f1f1'}} value="fr" onClick={e => changeLanguage(e.target.value)}>Fr </button>
+            <img src={imgFlag} style={{width:'50px', height:'auto'}} name={name} onClick={e => changeLanguage(e.target.name)}></img>
             <h1>
                 <FormattedMessage id="about.title"/>
             </h1>
@@ -17,6 +25,8 @@ const About = ({changeLanguage}) => {
                 <FormattedMessage id="about.content"/>
             </p>
         </div>
+            )}
+        </LanguageContext.Consumer>
     )
 }
 

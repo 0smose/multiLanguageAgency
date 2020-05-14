@@ -1,23 +1,44 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import LanguageContext from '../Context';
+import imgFr from "../assets/img/fr.png"
+import imgEn from "../assets/img/en.png"
+import { Link, Switch, Route, useRouteMatch} from 'react-router-dom'
+import Worksbar from "../components/Worksbar";
+import StudyCase from "../components/studycases/studycases";
 
+const Works = ({changeLanguage, language}) => {
 
+    let imgFlag;
+    let name;
 
-const About = ({changeLanguage}) => {
+    language === 'fr' ? imgFlag = imgEn : imgFlag = imgFr; 
+    language === 'fr' ? name = 'en' : name = 'fr';
+  
+    let { path } = useRouteMatch();
+    console.log(path);
   
     return (
+      <div>
         <div>
-             <button style={{width: '118.26px', backgroundColor: '#f1f1f1'}} value="en" onClick={e => changeLanguage(e.target.value)}>En </button><br/>
-             <button style={{width: '118.26px', backgroundColor: '#f1f1f1'}} value="fr" onClick={e => changeLanguage(e.target.value)}>Fr </button>
-            <h1>
-                <FormattedMessage id="works.title"/>
-            </h1>
-            <p> 
-                <FormattedMessage id="works.content"/>
-            </p>
+        <img src={imgFlag} style={{width:'50px', height:'auto'}} name={name} onClick={e => changeLanguage(e.target.name)}></img>
+          <h1>
+            <FormattedMessage id="works.title" />
+          </h1>
+          <p>
+            <FormattedMessage id="works.content" />
+          </p>
         </div>
-    )
-}
-
-export default About;
+        <div>
+          <Worksbar />
+          <Switch>
+            <Route path={`${path}/:studyCaseId`}>
+              <StudyCase />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    );
+  };
+  
+  export default Works;
